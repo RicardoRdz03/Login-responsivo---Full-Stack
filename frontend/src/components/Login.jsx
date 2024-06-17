@@ -42,11 +42,26 @@ function Login() {
             <div className="flex justify-center mb-5 px-12 md:px-2">
               <Input variant="underlined" type="text" label="Usuario" />
             </div>
-            <div className="flex justify-center mb-20 px-12 md:px-2">
+            <div className="flex justify-center mb-12 px-12 md:px-2">
               <Input variant="underlined" type="password" label="Contraseña" />
             </div>
             <div className="flex justify-center">
               <button id="boton">INGRESAR</button>
+            </div>
+            <div className="flex justify-center mt-9 mb-2">
+              <a href="#">
+                <p className="text-center underline text-sm md:text-base">
+                  ¿Olvidaste tu contraseña?
+                </p>
+              </a>
+            </div>
+            <div className="flex justify-center">
+              <p className="text-sm md:text-base">
+                ¿No puedes iniciar sesión?{" "}
+                <a className="text-center" href="/registro">
+                  <span className="underline">Pulsa aquí</span>
+                </a>
+              </p>
             </div>
           </div>
         </div>
