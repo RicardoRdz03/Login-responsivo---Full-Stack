@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import Aos from "aos";
 import "../estilos.css";
 
 function Registro() {
+  const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [contraseña, setContraseña] = useState("");
+
   useEffect(() => {
     Aos.init();
   }, []);
@@ -46,12 +52,20 @@ function Registro() {
             <form action="">
               <div className="flex justify-center mb-5 px-8 md:px-2 gap-2">
                 <Input
+                  value={nombre}
+                  onChange={(e) => {
+                    setNombre(e.target.value);
+                  }}
                   isRequired
                   variant="underlined"
                   type="text"
                   label="Nombre"
                 />
                 <Input
+                  value={apellido}
+                  onChange={(e) => {
+                    setApellido(e.target.value);
+                  }}
                   isRequired
                   variant="underlined"
                   type="text"
@@ -60,6 +74,10 @@ function Registro() {
               </div>
               <div className="flex justify-center mb-5 px-8 md:px-2">
                 <Input
+                  value={correo}
+                  onChange={(e) => {
+                    setCorreo(e.target.value);
+                  }}
                   isRequired
                   variant="underlined"
                   type="email"
@@ -68,12 +86,20 @@ function Registro() {
               </div>
               <div className="flex justify-center mb-10 px-8 md:px-2 gap-2">
                 <Input
+                  value={usuario}
+                  onChange={(e) => {
+                    setUsuario(e.target.value);
+                  }}
                   isRequired
                   variant="underlined"
                   type="text"
                   label="Usuario"
                 />
                 <Input
+                  value={contraseña}
+                  onChange={(e) => {
+                    setContraseña(e.target.value);
+                  }}
                   isRequired
                   variant="underlined"
                   type="password"
