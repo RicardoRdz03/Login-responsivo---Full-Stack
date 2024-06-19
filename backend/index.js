@@ -29,14 +29,46 @@ app.get("/", (request, response) => {
 app.post("/registrar", (request, response) => {
   const { nombre, apellido, correo, usuario, contraseña } = request.body;
 
+  //Verifica que el correo no pertenezca a otro usuario
   db.query(
-    "INSERT INTO usuarios(nombre,apellidos,correo,usuario,contraseña) VALUES(?,?,?,?,?)",
-    [nombre, apellido, correo, usuario, contraseña],
-    (err, result) => {
-      if (err) {
-        console.log("No se pudo registrar el usuario");
+    "SELECT * FROM usuarios WHERE correo=?",
+    [correo],
+    (error, result) => {
+      if (error) {
+        console.log("Error en el servidor");
+        return response.status(500).send("Error en el servidor");
+      } else if (result.length > 0) {
+        return response.status(400).send("El correo pertenece a otro usuario");
       } else {
-        response.send("Usuario registrado");
+        //verifica si el usuario ya existe
+        db.query(
+          "SELECT * FROM usuarios WHERE usuario=?",
+          [usuario],
+          (error, result) => {
+            if (error) {
+              console.error("Hubo un error en el servidor", error);
+              return response.status(500).send("Hubo un error en el servidor");
+            } else if (result.length > 0) {
+              return response.status(409).send("El usuario ya existe");
+            } else {
+              //Registrar el usuario
+              db.query(
+                "INSERT INTO usuarios(nombre,apellidos,correo,usuario,contraseña) VALUES(?,?,?,?,?)",
+                [nombre, apellido, correo, usuario, contraseña],
+                (err, result) => {
+                  if (err) {
+                    console.log("No se pudo registrar el usuario", err);
+                    return response
+                      .status(500)
+                      .send("No se pudo registrar el usuario");
+                  } else {
+                    return response.status(201).send("Usuario registrado");
+                  }
+                }
+              );
+            }
+          }
+        );
       }
     }
   );

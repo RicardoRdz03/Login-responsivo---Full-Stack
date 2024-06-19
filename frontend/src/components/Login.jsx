@@ -1,9 +1,12 @@
 import { Input } from "@nextui-org/react";
 import React, { useEffect } from "react";
 import "../estilos.css";
+import { useNavigate } from "react-router-dom";
 import Aos from "aos";
 
 function Login() {
+  const navigation = useNavigate();
+
   useEffect(() => {
     Aos.init();
   }, []);
@@ -40,10 +43,10 @@ function Login() {
               </h1>
             </div>
             <div className="flex justify-center mb-5 px-12 md:px-2">
-              <Input variant="underlined" type="text" label="Usuario" />
+              <Input type="text" label="Usuario" />
             </div>
             <div className="flex justify-center mb-12 px-12 md:px-2">
-              <Input variant="underlined" type="password" label="Contraseña" />
+              <Input type="password" label="Contraseña" />
             </div>
             <div className="flex justify-center">
               <button id="boton">INGRESAR</button>
@@ -58,7 +61,11 @@ function Login() {
             <div className="flex justify-center">
               <p className="text-sm md:text-base">
                 ¿No puedes iniciar sesión?{" "}
-                <a className="text-center" href="/registro">
+                <a
+                  id="mano"
+                  className="text-center"
+                  onClick={() => navigation("/registro")}
+                >
                   <span className="underline">Pulsa aquí</span>
                 </a>
               </p>

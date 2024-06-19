@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import Aos from "aos";
 import "../estilos.css";
+import axios from "axios";
 
 function Registro() {
   const [nombre, setNombre] = useState("");
@@ -9,6 +10,35 @@ function Registro() {
   const [correo, setCorreo] = useState("");
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
+
+  const registrarUsuario = async (e) => {
+    e.preventDefault();
+    try {
+      const respuesta = await axios.post("http://localhost:3001/registrar", {
+        nombre: nombre,
+        apellido: apellido,
+        correo: correo,
+        usuario: usuario,
+        contraseña: contraseña,
+      });
+      alert("Usuario registrado");
+    } catch (error) {
+      if (error.response) {
+        // El servidor respondió con un código de estado que no es 2xx
+        if (error.response.status === 409) {
+          alert("El usuario ya existe.");
+        } else {
+          alert("Error al registrar usuario: " + error.response.data);
+        }
+      } else if (error.request) {
+        // La solicitud fue hecha pero no hubo respuesta
+        alert("No se recibió respuesta del servidor.");
+      } else {
+        // Algo pasó al configurar la solicitud que desencadenó un error
+        alert("Error al realizar la solicitud: " + error.message);
+      }
+    }
+  };
 
   useEffect(() => {
     Aos.init();
@@ -49,15 +79,14 @@ function Registro() {
               </h1>
             </div>
 
-            <form action="">
+            <form onSubmit={registrarUsuario}>
               <div className="flex justify-center mb-5 px-8 md:px-2 gap-2">
                 <Input
                   value={nombre}
                   onChange={(e) => {
                     setNombre(e.target.value);
                   }}
-                  isRequired
-                  variant="underlined"
+                  required
                   type="text"
                   label="Nombre"
                 />
@@ -66,8 +95,7 @@ function Registro() {
                   onChange={(e) => {
                     setApellido(e.target.value);
                   }}
-                  isRequired
-                  variant="underlined"
+                  required
                   type="text"
                   label="Apellidos"
                 />
@@ -78,8 +106,7 @@ function Registro() {
                   onChange={(e) => {
                     setCorreo(e.target.value);
                   }}
-                  isRequired
-                  variant="underlined"
+                  required
                   type="email"
                   label="Correo electronico"
                 />
@@ -90,8 +117,7 @@ function Registro() {
                   onChange={(e) => {
                     setUsuario(e.target.value);
                   }}
-                  isRequired
-                  variant="underlined"
+                  required
                   type="text"
                   label="Usuario"
                 />
@@ -100,14 +126,14 @@ function Registro() {
                   onChange={(e) => {
                     setContraseña(e.target.value);
                   }}
-                  isRequired
-                  variant="underlined"
                   type="password"
                   label="Contraseña"
                 />
               </div>
               <div className="flex justify-center">
-                <button id="boton">REGISTRAR</button>
+                <button type="submit" id="boton">
+                  REGISTRAR
+                </button>
               </div>
             </form>
 
