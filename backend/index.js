@@ -26,6 +26,22 @@ app.get("/", (request, response) => {
   response.send("Hola mundo");
 });
 
+app.post("/registrar", (request, response) => {
+  const { nombre, apellido, correo, usuario, contraseña } = request.body;
+
+  db.query(
+    "INSERT INTO usuarios(nombre,apellidos,correo,usuario,contraseña) VALUES(?,?,?,?,?)",
+    [nombre, apellido, correo, usuario, contraseña],
+    (err, result) => {
+      if (err) {
+        console.log("No se pudo registrar el usuario");
+      } else {
+        response.send("Usuario registrado");
+      }
+    }
+  );
+});
+
 const PORT = 3001;
 
 app.listen(PORT, () => {
