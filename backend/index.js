@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const app = express();
 
@@ -9,10 +10,10 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-  user: "root",
-  password: "",
-  host: "127.0.0.1",
-  database: "lastlogin",
+  user: process.env.USER,
+  password: process.env.PASS,
+  host: process.env.HOST,
+  database: process.env.DB,
 });
 
 const SECRET_KEY = "your_secret_key";
