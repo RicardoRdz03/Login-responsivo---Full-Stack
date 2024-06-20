@@ -14,10 +14,13 @@ function Login(setLoggedUser) {
   const iniciarSesion = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await axios.post("http://localhost:3001/iniciar", {
-        usuario: usuario,
-        contraseña: contraseña,
-      });
+      const respuesta = await axios.post(
+        "https://login-responsivo-full-stack-o6jernfa2.vercel.app/iniciar",
+        {
+          usuario: usuario,
+          contraseña: contraseña,
+        }
+      );
       alert("Login exitoso");
       navigation("/principal");
     } catch (error) {

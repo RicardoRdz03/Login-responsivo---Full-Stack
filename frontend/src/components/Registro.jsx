@@ -14,13 +14,16 @@ function Registro() {
   const registrarUsuario = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await axios.post("http://localhost:3001/registrar", {
-        nombre: nombre,
-        apellido: apellido,
-        correo: correo,
-        usuario: usuario,
-        contraseña: contraseña,
-      });
+      const respuesta = await axios.post(
+        "https://login-responsivo-full-stack-o6jernfa2.vercel.app/registrar",
+        {
+          nombre: nombre,
+          apellido: apellido,
+          correo: correo,
+          usuario: usuario,
+          contraseña: contraseña,
+        }
+      );
       alert("Usuario registrado");
     } catch (error) {
       if (error.response) {
