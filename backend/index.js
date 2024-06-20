@@ -1,6 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -13,6 +14,8 @@ const db = mysql.createConnection({
   host: "127.0.0.1",
   database: "lastlogin",
 });
+
+const SECRET_KEY = "your_secret_key";
 
 db.connect((err) => {
   if (err) {
@@ -69,6 +72,24 @@ app.post("/registrar", (request, response) => {
             }
           }
         );
+      }
+    }
+  );
+});
+
+app.post("/iniciar", (request, response) => {
+  const { usuario, contraseña } = request.body;
+  db.query(
+    "SELECT * FROM usuarios WHERE usuario=? AND contraseña=?",
+    [usuario, contraseña],
+    (err, result) => {
+      if (err) {
+        console.log("Error en el servidor");
+        return response.status(500).send("Error en el servidor");
+      } else if (result.length > 0) {
+        return response.status(200).send("Login exitoso");
+      } else {
+        return response.status(409).send("Usuario o contraseña incorrectos");
       }
     }
   );

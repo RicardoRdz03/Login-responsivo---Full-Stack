@@ -1,11 +1,37 @@
 import { Input } from "@nextui-org/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../estilos.css";
 import { useNavigate } from "react-router-dom";
 import Aos from "aos";
+import axios from "axios";
 
-function Login() {
+function Login(setLoggedUser) {
   const navigation = useNavigate();
+
+  const [usuario, setUsuario] = useState("");
+  const [contraseña, setContraseña] = useState("");
+
+  const iniciarSesion = async (e) => {
+    e.preventDefault();
+    try {
+      const respuesta = await axios.post("http://localhost:3001/iniciar", {
+        usuario: usuario,
+        contraseña: contraseña,
+      });
+      alert("Login exitoso");
+      navigation("/principal");
+    } catch (error) {
+      if (error.response) {
+        if (error.response === 409) {
+          alert(error.response.data);
+        } else {
+          alert("Error al ingresar: " + error.response.data);
+        }
+      } else if (error.request) {
+        alert("No se recibio respuesta del servidor");
+      }
+    }
+  };
 
   useEffect(() => {
     Aos.init();
@@ -42,15 +68,35 @@ function Login() {
                 Inicio de sesión
               </h1>
             </div>
-            <div className="flex justify-center mb-5 px-12 md:px-2">
-              <Input type="text" label="Usuario" />
-            </div>
-            <div className="flex justify-center mb-12 px-12 md:px-2">
-              <Input type="password" label="Contraseña" />
-            </div>
-            <div className="flex justify-center">
-              <button id="boton">INGRESAR</button>
-            </div>
+            <form onSubmit={iniciarSesion}>
+              <div className="flex justify-center mb-5 px-12 md:px-2">
+                <Input
+                  required
+                  value={usuario}
+                  onChange={(e) => {
+                    setUsuario(e.target.value);
+                  }}
+                  type="text"
+                  label="Usuario"
+                />
+              </div>
+              <div className="flex justify-center mb-12 px-12 md:px-2">
+                <Input
+                  required
+                  value={contraseña}
+                  onChange={(e) => {
+                    setContraseña(e.target.value);
+                  }}
+                  type="password"
+                  label="Contraseña"
+                />
+              </div>
+              <div className="flex justify-center">
+                <button type="submit" id="boton">
+                  INGRESAR
+                </button>
+              </div>
+            </form>
             <div className="flex justify-center mt-9 mb-2">
               <a href="#">
                 <p className="text-center underline text-sm md:text-base">
