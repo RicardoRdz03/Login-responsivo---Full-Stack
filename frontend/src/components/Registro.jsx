@@ -2,29 +2,39 @@ import React, { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
 import Aos from "aos";
 import "../estilos.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Registro() {
+  const navigation = useNavigate();
+
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [correo, setCorreo] = useState("");
   const [usuario, setUsuario] = useState("");
   const [contraseña, setContraseña] = useState("");
 
+  const borrarRegistros = () => {
+    setNombre("");
+    setApellido("");
+    setCorreo("");
+    setUsuario("");
+    setContraseña("");
+  };
+
   const registrarUsuario = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await axios.post(
-        "https://backend-a95yucirl-ricardos-projects-2b49346d.vercel.app/registrar",
-        {
-          nombre: nombre,
-          apellido: apellido,
-          correo: correo,
-          usuario: usuario,
-          contraseña: contraseña,
-        }
-      );
+      const respuesta = await axios.post("http://localhost:3001/registrar", {
+        nombre: nombre,
+        apellido: apellido,
+        correo: correo,
+        usuario: usuario,
+        contraseña: contraseña,
+      });
       alert("Usuario registrado");
+      borrarRegistros();
+      navigation("/");
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un código de estado que no es 2xx
@@ -51,11 +61,13 @@ function Registro() {
       <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 xl:col-span-1 md:block hidden">
         <div className="h-screen bg-stone-950 flex justify-center items-center flex-col">
           <div className="mb-6">
-            <h1 className="text-5xl font-bold text-white">¡HOLA!</h1>
+            <h1 id="titulo" className="text-6xl font-bold text-white">
+              ¡BIENVENIDO!
+            </h1>
           </div>
           <div className="mb-20 px-8">
             <h2 className="text-base text-center text-white">
-              Se parte de nosotros, inicia sesión en el siguiente formulario
+              Registrate para poder iniciar sesión
             </h2>
           </div>
           <div data-aos="fade-down" className="flex justify-center pb-2">
@@ -77,8 +89,11 @@ function Registro() {
               <img style={{ width: "88px" }} src="/astronave.png" alt="" />
             </div>
             <div className="mb-12 ">
-              <h1 className="text-center text-3xl font-bold md:text-5xl">
-                Registro
+              <h1
+                id="titulo"
+                className="text-center text-3xl font-bold md:text-5xl"
+              >
+                REGISTRO
               </h1>
             </div>
 
@@ -141,19 +156,16 @@ function Registro() {
             </form>
 
             <div className="flex justify-center mt-9 mb-2">
-              <a href="#">
+              <a
+                id="mano"
+                onClick={() => {
+                  navigation("/");
+                }}
+              >
                 <p className="text-center underline text-sm md:text-base">
-                  ¿Olvidaste tu contraseña?
+                  Ir al inicio de sesión
                 </p>
               </a>
-            </div>
-            <div className="flex justify-center">
-              <p className="text-sm md:text-base">
-                ¿No puedes iniciar sesión?{" "}
-                <a className="text-center" href="#">
-                  <span className="underline">Pulsa aquí</span>
-                </a>
-              </p>
             </div>
           </div>
         </div>

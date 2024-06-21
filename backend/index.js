@@ -88,7 +88,10 @@ app.post("/iniciar", (request, response) => {
         console.log("Error en el servidor");
         return response.status(500).send("Error en el servidor");
       } else if (result.length > 0) {
-        return response.status(200).send("Login exitoso");
+        const token = jwt.sign({ id: result[0].id }, SECRET_KEY, {
+          expiresIn: "1h",
+        });
+        res.send({ message: "Login exitoso", token });
       } else {
         return response.status(409).send("Usuario o contraseña incorrectos");
       }

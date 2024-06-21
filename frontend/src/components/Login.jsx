@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Aos from "aos";
 import axios from "axios";
 
-function Login(setLoggedUser) {
+function Login({ setLoggedUser }) {
   const navigation = useNavigate();
 
   const [usuario, setUsuario] = useState("");
@@ -14,15 +14,14 @@ function Login(setLoggedUser) {
   const iniciarSesion = async (e) => {
     e.preventDefault();
     try {
-      const respuesta = await axios.post(
-        "https://backend-a95yucirl-ricardos-projects-2b49346d.vercel.app/iniciar",
-        {
-          usuario: usuario,
-          contraseña: contraseña,
-        }
-      );
+      const response = await axios.post("http://localhost:3001/iniciar", {
+        usuario: usuario,
+        contraseña: contraseña,
+      });
+      localStorage.setItem("token", response.data.token);
+      setLoggedUser(usuario);
       alert("Login exitoso");
-      navigation("/principal");
+      navigation("/main");
     } catch (error) {
       if (error.response) {
         if (error.response === 409) {
@@ -44,7 +43,9 @@ function Login(setLoggedUser) {
       <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 xl:col-span-1 md:block hidden">
         <div className="h-screen bg-stone-950 flex justify-center items-center flex-col">
           <div className="mb-6">
-            <h1 className="text-5xl font-bold text-white">¡HOLA!</h1>
+            <h1 id="titulo" className="text-6xl font-bold text-white">
+              ¡HOLA!
+            </h1>
           </div>
           <div className="mb-20 px-8">
             <h2 className="text-base text-center text-white">
@@ -67,8 +68,11 @@ function Login(setLoggedUser) {
               <img style={{ width: "88px" }} src="/nave.png" alt="" />
             </div>
             <div className="mb-12 ">
-              <h1 className="text-center text-3xl font-bold md:text-5xl">
-                Inicio de sesión
+              <h1
+                id="titulo"
+                className="text-center text-3xl font-bold md:text-5xl"
+              >
+                INICIO DE SESIÓN
               </h1>
             </div>
             <form onSubmit={iniciarSesion}>
