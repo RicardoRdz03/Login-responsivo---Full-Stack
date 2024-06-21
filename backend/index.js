@@ -91,7 +91,7 @@ app.post("/iniciar", (request, response) => {
         const token = jwt.sign({ id: result[0].id }, SECRET_KEY, {
           expiresIn: "1h",
         });
-        res.send({ message: "Login exitoso", token });
+        response.send({ message: "Login exitoso", token });
       } else {
         return response.status(409).send("Usuario o contraseña incorrectos");
       }

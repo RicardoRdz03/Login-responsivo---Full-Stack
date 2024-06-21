@@ -14,10 +14,13 @@ function Login({ setLoggedUser }) {
   const iniciarSesion = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/iniciar", {
-        usuario: usuario,
-        contraseña: contraseña,
-      });
+      const response = await axios.post(
+        "https://login-responsivo-fullstack.onrender.com/iniciar",
+        {
+          usuario: usuario,
+          contraseña: contraseña,
+        }
+      );
       localStorage.setItem("token", response.data.token);
       setLoggedUser(usuario);
       alert("Login exitoso");
